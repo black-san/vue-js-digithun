@@ -6,6 +6,7 @@
             <input type="password" name="password" v-model="password" placeholder="Password" required>
             <input type="button" v-on:click="login" value="Login">
         </form>
+        {{test}}
     </div>
 </template>
 
@@ -15,14 +16,15 @@ export default {
     data () {
         return {
             email: '',
-            password: ''
+            password: '',
+            test: 'Not logged in'
         };
     },
     methods: {
         async login () {
             // Dispatch login function
-            console.log(this.email, this.password);
-            await this.$store.dispatch("login");
+            await this.$store.dispatch("login", { email: this.email, password: this.password });
+            this.test = this.$store.state.userInfo;
         }
     }
 }
