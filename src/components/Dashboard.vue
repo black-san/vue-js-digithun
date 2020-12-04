@@ -40,7 +40,9 @@ export default {
         };
     },
     mounted (){
-        this.userInfo = JSON.parse(localStorage.userInfo);
+        if(localStorage.userInfo){
+            this.userInfo = JSON.parse(localStorage.userInfo);
+        }
     },
     methods: {
         gotoLogin() {
