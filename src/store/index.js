@@ -14,40 +14,66 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    fectchGroup(state, { res }) {
-      state.groups = res.data.items;
-    },
-    fetchMember(state, { res }) {
-        state.members = res.data.items;
-    },
     login(state, { res }) {
-      console.log("Login succes: " + res.data);  
       state.userInfo = res.data.userInfo;
+      localStorage.isLoggedIn = true;
+      localStorage.userInfo = JSON.stringify(res.data.userInfo);
+    },
+    register(state, { res }) {
+      state.userInfo = res.data.userInfo;
+      localStorage.isLoggedIn = true;
+      localStorage.userInfo = JSON.stringify(res.data.userInfo);    
+    },
+    update(state, { res }) {
+      state.userInfo = res.data.userInfo;
+      localStorage.isLoggedIn = true;
+      localStorage.userInfo = JSON.stringify(res.data.userInfo);    
     }
+    
   },
+    
 
   actions: {
-    async fectchGroup({ commit }) {
-      await Axios.get(api + "group/")
-        .then(res => commit("fectchGroup", { res }))
-        .catch(err => alert(err));
-    },
-    async fetchMember({ commit }) {
-        await Axios.get(api + "member/")
-          .then(res => commit("fetchMember", { res }))
-          .catch(err => alert(err));
-    },
     async login({ commit }, reqData) {
       const headers = {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
       };
       console.log(reqData.email, reqData.password);
       const userLoginRequest = {
-        'username': reqData.email,
+        'email': reqData.email,
         'password': reqData.password
       };
       await Axios.post(api + '/auth', userLoginRequest, headers)
       .then(res => commit("login", { res }))
+      .catch(err => alert(err));
+    },
+    async register({ commit }, reqData) {
+      const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      };
+      console.log('Register: ' + reqData.email + reqData.password);
+      const userResgistrationRequest = {
+        'username': reqData.name,
+        'email': reqData.email,
+        'password': reqData.password
+      };
+      await Axios.post(api + '/register', userResgistrationRequest, headers)
+      .then(res => commit("register", { res }))
+      .catch(err => alert(err));
+    },
+    async update({ commit }, reqData) {
+      const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      };
+      console.log('Update: ' + reqData.email + reqData.password);
+      const userUpdateRequest = {
+        'username': reqData.name,
+        'email': reqData.email,
+        'password': reqData.password,
+        'id': reqData.id
+      };
+      await Axios.post(api + '/update', userUpdateRequest, headers)
+      .then(res => commit("update", { res }))
       .catch(err => alert(err));
     }
   },

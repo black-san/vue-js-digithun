@@ -2,7 +2,7 @@
     <div class="login-form">
         <h1>Please Login</h1>
         <form>
-            <input type="text" name="username" v-model="email" placeholder="Username" required>
+            <input type="text" name="username" v-model="email" placeholder="Email" required>
             <input type="password" name="password" v-model="password" placeholder="Password" required>
             <input type="button" v-on:click="login" value="Login">
         </form>
@@ -23,8 +23,8 @@ export default {
     methods: {
         async login () {
             // Dispatch login function
-            await this.$store.dispatch("login", { email: this.email, password: this.password });
-            this.test = this.$store.state.userInfo;
+            await this.$store.dispatch("login", { email: this.email, password: this.password })
+            .then(() => this.$router.push({ name: "home" }));
         }
     }
 }
